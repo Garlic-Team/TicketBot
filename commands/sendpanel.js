@@ -10,7 +10,7 @@ module.exports = {
     run: async({client, respond}) => {
       let embed = new MessageEmbed()
         .setAuthor("Support")
-        .setDescription("You may ask any questions you have about the @Karot bot.")
+        .setDescription("You may ask any questions you have about the Garlic Team.")
         .setColor("#fcba03")
         .setFooter("By Hyro#8938")
         .setTimestamp();
