@@ -13,7 +13,7 @@ module.exports = {
         if(button.id == "support_ticket_create") {
             let allChannels = client.channels.cache.filter(m => m.type == "text" && m.name.includes("ticket-")).map(m => m.name.split("ticket-")[1]);
             
-            let already = allChannels.some(v => buttonMember.user.id.includes(v.toLowerCase()))
+            let already = allChannels.some(v => buttonMember.user.id == v)
             if(already === true) {
                 return buttonMember.send("Sorry, you already have ticket.")
             }
@@ -212,7 +212,6 @@ module.exports = {
 
         if(button.id == `ticket_transcript_${button.channel.id}`) {
             let ticketChannel = button.channel;
-            let createdBy = client.users.cache.get(ticketChannel.name.split("ticket-closed-")[1]) ? client.users.cache.get(ticketChannel.name.split("ticket-closed-")[1]) : client.users.cache.get(ticketChannel.name.split("ticket-")[1])
 
             let allMessages = await ticketChannel.messages.fetch()
             let systemMessages = allMessages.filter(m => m.content && m.author.id != client.user.id && !m.author.bot).map(m => msToTime(m.createdTimestamp) +" | "+ m.author.tag + ": " + m.cleanContent).join("\n");
@@ -224,17 +223,19 @@ module.exports = {
         }
 
         function msToTime(ms) {
-            let date = new Date(ms)
+            let fullFill = (a, limit) => ("0".repeat(69) + a.toString()).slice(limit ? -limit : -2);
 
-            let monthDate = date.getDate();
-
-            let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-            let month = months[date.getMonth()];
-
-            let hours = date.getHours();
-            let minutes = date.getMinutes();
-
-            return `${monthDate}. ${month} ${hours}:${minutes}`;
+            let daet = new Date(ms);
+            
+            let day = fullFill(daet.getDate());
+            let month = fullFill(daet.getMonth());
+            let year = fullFill(daet.getFullYear(), 4);
+            
+            let hours = fullFill(daet.getHours());
+            let mins = fullFill(daet.getMinutes());
+            let secs = fullFill(daet.getSeconds());
+            
+            return `${day}/${month}/${year} ${hours}:${mins}:${secs}`;
         }
     }
 }
