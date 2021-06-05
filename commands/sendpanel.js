@@ -22,7 +22,7 @@ module.exports = {
 
       respond({
         content: embed,
-        ephemeral: true,
+        inlineReply: false,
         components: new MessageActionRow().addComponent(button)
       })
   }
