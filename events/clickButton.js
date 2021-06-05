@@ -216,7 +216,7 @@ module.exports = {
             let allMessages = await ticketChannel.messages.fetch()
             let systemMessages = allMessages.filter(m => m.content && m.author.id != client.user.id && !m.author.bot).map(m => msToTime(m.createdTimestamp) +" | "+ m.author.tag + ": " + m.cleanContent).join("\n");
 
-            let attch = new MessageAttachment(Buffer.from(systemMessages), "transcript.txt")
+            let attch = new MessageAttachment(Buffer.from(systemMessages), `saved_transcript_${button.channel.id}.txt`)
             ticketChannel.Gsend(`${button.clicker.user} your transcript is ready!`, {
                 files: [attch]
             })
