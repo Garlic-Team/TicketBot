@@ -22,4 +22,4 @@
  - `gcommands v4` npm
 
 
- `npm i discord.js axio gcommands`
+ `npm i discord.js axios gcommands`
