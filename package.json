@@ -1,7 +1,6 @@
 {
   "dependencies": {
     "axios": "^0.21.1",
-    "discord-buttons": "^3.1.1",
     "discord.js": "^12.5.3",
     "gcommands": "^4.1.2"
   }
