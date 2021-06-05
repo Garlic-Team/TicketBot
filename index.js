@@ -7,6 +7,7 @@ const client = new Discord.Client({ partials: ['MESSAGE', 'REACTION', 'GUILD_MEM
 client.tickets = {
     category: process.env.ticketCategory,
     closedCategory: process.env.ticketClosedCategory,
+    archiveCategory: process.env.archiveCategory,
     moderatorRole: process.env.ticketModeratorRole
 }
 

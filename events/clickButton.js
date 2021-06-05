@@ -71,7 +71,7 @@ module.exports = {
 
                     let closedEmbed = new MessageEmbed()
                         .setColor("#4287f5")
-                        .setDescription(`Ticket closed by ${button.clicker.user}\nTicket created by ${createdBy}\n\n🔓 Reopen Ticket\n📛 Delete Ticket`)
+                        .setDescription(`Ticket closed by ${button.clicker.user}\nTicket created by ${createdBy}\n\n🔓 Reopen Ticket\n📛 Delete Ticket\n💨 Archive Ticket`)
 
                     let reopen = new MessageButton()
                         .setLabel("")
@@ -84,6 +84,12 @@ module.exports = {
                         .setID(`ticket_delete_${ticketChannel.id}`)
                         .setEmoji("📛")
                         .setStyle("red")
+
+                    let archiveButton = new MessageButton()
+                        .setLabel("")
+                        .setID(`ticket_archive_${ticketChannel.id}`)
+                        .setEmoji("💨")
+                        .setStyle("gray")
 
                     button.channel.edit({
                         name: `ticket-closed-${createdBy}`,
@@ -104,7 +110,7 @@ module.exports = {
                         ]
                     })
 
-                    button.channel.send("", {embeds: closedEmbed, components: new MessageActionRow().addComponent(reopen).addComponent(deleteButton)})
+                    button.channel.send("", {embeds: closedEmbed, components: new MessageActionRow().addComponent(reopen).addComponent(deleteButton).addComponent(archiveButton)})
                 } else {
                     msg.delete();
                 }
@@ -162,6 +168,40 @@ module.exports = {
             
             ticketChannel.send("", {embeds: deleteEmbed})
             setTimeout(() => {ticketChannel.delete()}, 5000);
+        }
+
+        if(button.id == `ticket_archive_${button.channel.id}`) {
+            let ticketChannel = button.channel;
+            let createdBy = client.users.cache.get(ticketChannel.name.split("ticket-closed-")[1]) ? client.users.cache.get(ticketChannel.name.split("ticket-closed-")[1]) : client.users.cache.get(ticketChannel.name.split("ticket-")[1])
+
+            let allMessages = await ticketChannel.messages.fetch()
+            let systemMessages = allMessages.filter(m => Array.isArray(m.embeds));
+            systemMessages.forEach(msg => {msg.delete()})
+
+            let archiveEmbed = new MessageEmbed()
+                .setColor("#f5bf42")
+                .setDescription("The ticket has been archived. You can just delete it.")
+
+            button.channel.edit({
+                name: `ticket-archived-${createdBy}`,
+                parentID: client.tickets.archiveCategory,
+                permissionOverwrites: [
+                    {
+                        id: createdBy.id,
+                        deny: ["VIEW_CHANNEL"]
+                    },
+                    {
+                        id: guild.roles.everyone,
+                        deny: ["VIEW_CHANNEL"]
+                    },
+                    {
+                        id: client.tickets.moderatorRole,
+                        deny: ["SEND_MESSAGES"]
+                    }
+                ]
+            })
+
+            button.channel.send("", {embeds: archiveEmbed})
         }
     }
 }
