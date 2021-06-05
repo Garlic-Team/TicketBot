@@ -122,7 +122,7 @@ module.exports = {
             let createdBy = client.users.cache.get(ticketChannel.name.split("ticket-closed-")[1]) ? client.users.cache.get(ticketChannel.name.split("ticket-closed-")[1]) : client.users.cache.get(ticketChannel.name.split("ticket-")[1])
 
             let allMessages = await ticketChannel.messages.fetch()
-            let systemMessages = allMessages.filter(m => Array.isArray(m.embeds));
+            let systemMessages = allMessages.filter(m => m.embeds && m.author.id == client.user.id);
             systemMessages.forEach(msg => {msg.delete()})
 
             let supportEmbed = new MessageEmbed()
@@ -175,7 +175,8 @@ module.exports = {
             let createdBy = client.users.cache.get(ticketChannel.name.split("ticket-closed-")[1]) ? client.users.cache.get(ticketChannel.name.split("ticket-closed-")[1]) : client.users.cache.get(ticketChannel.name.split("ticket-")[1])
 
             let allMessages = await ticketChannel.messages.fetch()
-            let systemMessages = allMessages.filter(m => Array.isArray(m.embeds));
+            let systemMessages = allMessages.filter(m => m.embeds && m.author.id == client.user.id);
+            console.log(systemMessages)
             systemMessages.forEach(msg => {msg.delete()})
 
             let archiveEmbed = new MessageEmbed()
