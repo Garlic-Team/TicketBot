@@ -5,9 +5,9 @@ require("./classes/TextChannel")
 const client = new Discord.Client({ partials: ['MESSAGE', 'REACTION', 'GUILD_MEMBER']});
 
 client.tickets = {
-    category: "850668511935725568",
-    closedCategory: "850688724513849374",
-    moderatorRole: "772018468198416404"
+    category: process.env.ticketCategory,
+    closedCategory: process.env.ticketClosedCategory,
+    moderatorRole: process.env.ticketModeratorRole
 }
 
 client.on('ready', async () => {
