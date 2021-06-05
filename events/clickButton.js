@@ -215,7 +215,7 @@ module.exports = {
             let createdBy = client.users.cache.get(ticketChannel.name.split("ticket-closed-")[1]) ? client.users.cache.get(ticketChannel.name.split("ticket-closed-")[1]) : client.users.cache.get(ticketChannel.name.split("ticket-")[1])
 
             let allMessages = await ticketChannel.messages.fetch()
-            let systemMessages = allMessages.filter(m => m.content && m.author.id != client.user.id && !m.author.bot).map(m => msToTime(m.createdTimestamp) +" | "+ m.author.tag + ": " + m.content).join("\n");
+            let systemMessages = allMessages.filter(m => m.content && m.author.id != client.user.id && !m.author.bot).map(m => msToTime(m.createdTimestamp) +" | "+ m.author.tag + ": " + m.cleanContent).join("\n");
 
             let attch = new MessageAttachment(Buffer.from(systemMessages), "transcript.txt")
             ticketChannel.Gsend(`${button.clicker.user} your transcript is ready!`, {
