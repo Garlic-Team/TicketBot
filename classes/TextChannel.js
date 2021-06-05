@@ -7,7 +7,7 @@ module.exports = Structures.extend("TextChannel", TextChannel => {
             super(...args)
         }
 
-        async send(content, options) {
+        async Gsend(content, options) {
             if(!options) options = {};
 
             var embed = null;
@@ -29,6 +29,17 @@ module.exports = Structures.extend("TextChannel", TextChannel => {
     
             if(options.embeds) embed = options.embeds
     
+            let finalFiles = []
+            if(options.files && options.files.length > 0) {
+                options.files.forEach(file => {
+                    finalFiles.push({
+                        attachment: file.attachment,
+                        name: file.name,
+                        file: file.attachment
+                    })
+                })
+            }
+
             return this.client.api.channels[this.id].messages.post({
                 data: {
                     allowed_mentions: options.allowedMentions,
@@ -36,7 +47,8 @@ module.exports = Structures.extend("TextChannel", TextChannel => {
                     components: options.components,
                     options,
                     embed: embed || null
-                }
+                },
+                files: finalFiles || []
             })
             .then(d => this.client.actions.MessageCreate.handle(d).message);
         }

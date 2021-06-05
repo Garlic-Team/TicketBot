@@ -1,5 +1,5 @@
 const { MessageEmbed } = require("discord.js");
-const { MessageButton, MessageActionRow } = require("gcommands/src");
+const { MessageButton, MessageActionRow } = require("discord-buttons");
 
 module.exports = {
     name: "sendpanel",
