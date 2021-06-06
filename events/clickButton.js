@@ -9,6 +9,8 @@ module.exports = {
 
         let buttonMember = button.clicker.member;
         let guild = button.guild;
+        let guildInfo = await client.db.get(`guild_${guild.id}`)
+        if(!guildInfo) return;
 
         if(button.id == "support_ticket_create") {
             let allChannels = client.channels.cache.filter(m => m.type == "text" && m.name.includes("ticket-")).map(m => m.name.split("ticket-")[1]);
@@ -21,7 +23,7 @@ module.exports = {
             let ticketChannel = await guild.channels.create(`ticket-${buttonMember.user.id}`, {
                 type: "text",
                 topic: `${buttonMember.user.username}'s ticket`,
-                parent: client.tickets.category,
+                parent: guildInfo.openedCategory,
                 permissionOverwrites: [
                     {
                         id: buttonMember.id,
@@ -32,7 +34,7 @@ module.exports = {
                         deny: ["VIEW_CHANNEL"]
                     },
                     {
-                        id: client.tickets.moderatorRole,
+                        id: guildInfo.moderatorRole,
                         allow: ["SEND_MESSAGES","VIEW_CHANNEL"]
                     }
                 ]
@@ -99,7 +101,7 @@ module.exports = {
 
                     button.channel.edit({
                         name: `ticket-closed-${createdBy}`,
-                        parentID: client.tickets.closedCategory,
+                        parentID: guildInfo.closedCategory,
                         permissionOverwrites: [
                             {
                                 id: createdBy.id,
@@ -110,7 +112,7 @@ module.exports = {
                                 deny: ["VIEW_CHANNEL"]
                             },
                             {
-                                id: client.tickets.moderatorRole,
+                                id: guildInfo.moderatorRole,
                                 allow: ["SEND_MESSAGES","VIEW_CHANNEL"]
                             }
                         ]
@@ -145,7 +147,7 @@ module.exports = {
 
             ticketChannel.edit({
                 name: `ticket-${createdBy}`,
-                parentID: client.tickets.category,
+                parentID: guildInfo.openedCategory,
                 permissionOverwrites: [
                     {
                         id: createdBy.id,
@@ -156,7 +158,7 @@ module.exports = {
                         deny: ["VIEW_CHANNEL"]
                     },
                     {
-                        id: client.tickets.moderatorRole,
+                        id: guildInfo.moderatorRole,
                         allow: ["SEND_MESSAGES","VIEW_CHANNEL"]
                     }
                 ]
@@ -190,7 +192,7 @@ module.exports = {
 
             button.channel.edit({
                 name: `ticket-archived-${createdBy}`,
-                parentID: client.tickets.archiveCategory,
+                parentID: guildInfo.archivedCategory,
                 permissionOverwrites: [
                     {
                         id: createdBy.id,
@@ -201,7 +203,7 @@ module.exports = {
                         deny: ["VIEW_CHANNEL"]
                     },
                     {
-                        id: client.tickets.moderatorRole,
+                        id: guildInfo.moderatorRole,
                         deny: ["SEND_MESSAGES"]
                     }
                 ]
@@ -216,7 +218,7 @@ module.exports = {
             let allMessages = await ticketChannel.messages.fetch()
             let systemMessages = allMessages.filter(m => m.content && m.author.id != client.user.id && !m.author.bot).map(m => msToTime(m.createdTimestamp) +" | "+ m.author.tag + ": " + m.cleanContent).join("\n");
 
-            let attch = new MessageAttachment(Buffer.from(systemMessages), `saved_transcript_${button.channel.id}.txt`)
+            let attch = new MessageAttachment(Buffer.from(systemMessages), "transcript.txt")
             ticketChannel.Gsend(`${button.clicker.user} your transcript is ready!`, {
                 files: [attch]
             })

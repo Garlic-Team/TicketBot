@@ -4,7 +4,6 @@ const { MessageButton, MessageActionRow } = require("gcommands");
 module.exports = {
     name: "sendpanel",
     description: "Send panel :O",
-    guildOnly: "747526604116459691",
     slash: false,
     userRequiredPermissions: "ADMINISTRATOR",
     run: async({client, respond}) => {

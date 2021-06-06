@@ -1,7 +1,12 @@
 {
   "dependencies": {
+    "@keyv/mongo": "^1.1.0",
     "axios": "^0.21.1",
+    "discord-buttons": "^3.1.1",
     "discord.js": "^12.5.3",
-    "gcommands": "^4.1.2"
+    "dotenv": "^10.0.0",
+    "gcommands": "^4.1.2",
+    "keyv": "^4.0.3",
+    "keyv-mongodb": "^1.0.0"
   }
 }

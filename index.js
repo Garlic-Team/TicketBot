@@ -1,9 +1,11 @@
 require("dotenv").config()
 const Discord = require('discord.js')
 const { GCommands } = require("gcommands");
+const Keyv = require('keyv');
 require("./classes/TextChannel")
 const client = new Discord.Client({ partials: ['MESSAGE', 'REACTION', 'GUILD_MEMBER']});
 
+client.db = new Keyv(); //https://www.npmjs.com/package/keyv
 client.tickets = {
     category: process.env.ticketCategory,
     closedCategory: process.env.ticketClosedCategory,
