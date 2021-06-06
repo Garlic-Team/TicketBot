@@ -2,8 +2,6 @@
     <h1>Ticket Bot</h1>
 </div>
 
-----
-
 ### Star (Please)
 
 
