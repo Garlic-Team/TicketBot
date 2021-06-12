@@ -50,7 +50,13 @@ module.exports = {
                 .setStyle("gray")
                 .setID(`ticket_close_${ticketChannel.id}`)
 
-            ticketChannel.Gsend(`${buttonMember.user} Welcome!`, {embeds: supportEmbed, components: new MessageActionRow().addComponent(supportButton)})
+            let claimButton = new MessageButton()
+                .setLabel("")
+                .setEmoji("📌")
+                .setStyle("gray")
+                .setID(`ticket_claim_${ticketChannel.id}`)   
+            
+            ticketChannel.Gsend(`${buttonMember.user} Welcome!`, {embeds: supportEmbed, components: new MessageActionRow().addComponent(supportButton).addComponent(claimButton)})
             buttonMember.send(`Your ticket has been created. ${ticketChannel}`)
         }
 
@@ -143,6 +149,12 @@ module.exports = {
                 .setStyle("gray")
                 .setID(`ticket_close_${ticketChannel.id}`)
 
+            let claimButton = new MessageButton()
+                .setLabel("")
+                .setEmoji("📌")
+                .setStyle("gray")
+                .setID(`ticket_claim_${ticketChannel.id}`)
+            
             ticketChannel.edit({
                 name: `ticket-${createdBy}`,
                 parentID: client.tickets.category,
@@ -162,7 +174,7 @@ module.exports = {
                 ]
             })
 
-            ticketChannel.Gsend(`${createdBy} Welcome back!`, {embeds: supportEmbed, components: new MessageActionRow().addComponent(supportButton)})
+            ticketChannel.Gsend(`${createdBy} Welcome back!`, {embeds: supportEmbed, components: new MessageActionRow().addComponent(supportButton).addComponent(claimButton)})
         }
 
         if(button.id == `ticket_delete_${button.channel.id}`) {
