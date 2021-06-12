@@ -8,6 +8,7 @@ client.tickets = {
     category: process.env.ticketCategory,
     closedCategory: process.env.ticketClosedCategory,
     archiveCategory: process.env.archiveCategory,
+    claimedCategory: process.env.claimedCategory,
     moderatorRole: process.env.ticketModeratorRole
 }
 
