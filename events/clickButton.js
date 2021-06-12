@@ -222,6 +222,36 @@ module.exports = {
             })
         }
 
+        if(button.id == `ticket_claim_${button.channel.id}`) {
+            let ticketChannel = button.channel;
+            let createdBy = client.users.cache.get(ticketChannel.name.split("ticket-")[1]) || client.users.cache.get(ticketChannel.name.split("ticket-claimed-")[1]) || client.users.cache.get(ticketChannel.name.split("ticket-closed-")[1]) 
+
+            let claimEmbed = new MessageEmbed()
+                .setColor("#f5bf42")
+                .setDescription(`${button.clicker.user} claimed this ticket.`)
+
+            button.channel.edit({
+                name: `ticket-claimed-${createdBy}`,
+                parentID: client.tickets.claimedCategory,
+                permissionOverwrites: [
+                    {
+                        id: createdBy.id,
+                        deny: ["VIEW_CHANNEL"]
+                    },
+                    {
+                        id: guild.roles.everyone,
+                        deny: ["VIEW_CHANNEL"]
+                    },
+                    {
+                        id: client.tickets.moderatorRole,
+                        deny: ["SEND_MESSAGES"]
+                    }
+                ]
+            })
+
+            button.channel.Gsend("", {embeds: claimEmbed})
+        }    
+        
         function msToTime(ms) {
             let fullFill = (a, limit) => ("0".repeat(69) + a.toString()).slice(limit ? -limit : -2);
 
