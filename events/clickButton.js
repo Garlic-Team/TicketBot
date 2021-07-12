@@ -71,7 +71,7 @@ module.exports = {
             let yes = new MessageButton().setLabel("").setEmoji("✅").setStyle("gray").setID(`ticket_close_yes_${buttonMember.user.id}`)
             let no = new MessageButton().setLabel("").setEmoji("❌").setStyle("gray").setID(`ticket_close_no_${buttonMember.user.id}`)
 
-            let msg = await ticketChannel.Gsend(`${buttonMember.user} Do you really want close ticket?`, {components: new MessageActionRow().addComponent(yes).addComponent(no)})
+            let msg = await ticketChannel.send({content: `${buttonMember.user} Do you really want close ticket?`, components: new MessageActionRow().addComponent(yes).addComponent(no)})
             let filter = (button) => buttonMember.user.id == button.clicker.user.id
             let collector = ticketChannel.createButtonCollector(msg, filter, { max: 1, time: 60000, errors: ["time"] })
 
