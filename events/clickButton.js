@@ -235,7 +235,7 @@ module.exports = {
             let attch = new MessageAttachment(Buffer.from(systemMessages), `saved_transcript_${button.channel.id}.txt`)
             ticketChannel.send({
                 content: `${button.clicker.user} your transcript is ready!`,
-                files: [attch]
+                attachments: [attch]
             })
         }
 
