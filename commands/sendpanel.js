@@ -1,29 +1,34 @@
 const { MessageEmbed } = require("discord.js");
-const { MessageButton, MessageActionRow } = require("gcommands");
+const { MessageButton, MessageActionRow, Command } = require("gcommands");
 
-module.exports = {
-    name: "sendpanel",
-    description: "Send panel :O",
-    guildOnly: "747526604116459691",
-    slash: false,
-    userRequiredPermissions: "ADMINISTRATOR",
-    run: async({client, respond}) => {
-      let embed = new MessageEmbed()
-        .setAuthor("Support")
-        .setDescription("You may ask any questions you have about the Garlic Team.")
-        .setColor("#fcba03")
-        .setFooter("By Hyro#8938")
-        .setTimestamp();
+module.exports = class extends Command {
+  constructor(...args) {
+    super(...args, {
+      name: "sendpanel",
+      description: "Send panel :O",
+      guildOnly: "747526604116459691",
+      slash: false,
+      userRequiredPermissions: "ADMINISTRATOR",   
+    })
+  }
 
-      let button = new MessageButton()
-        .setLabel("Support")
-        .setStyle("red")
-        .setID("support_ticket_create")
+  async run({client, respond}) {
+    let embed = new MessageEmbed()
+      .setAuthor("Support")
+      .setDescription("You may ask any questions you have about the Garlic Team.")
+      .setColor("#fcba03")
+      .setFooter("By Hyro#8938")
+      .setTimestamp();
 
-      respond({
-        content: embed,
-        inlineReply: false,
-        components: new MessageActionRow().addComponent(button)
-      })
+    let button = new MessageButton()
+      .setLabel("Support")
+      .setStyle("red")
+      .setCustomId("support_ticket_create")
+
+    respond({
+      content: embed,
+      inlineReply: false,
+      components: new MessageActionRow().addComponents([button])
+    })
   }
 };
