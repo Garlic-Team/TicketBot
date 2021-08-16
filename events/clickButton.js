@@ -259,21 +259,7 @@ module.exports = {
 
             button.channel.edit({
                 name: `ticket-claimed-${createdBy}`,
-                parentID: client.tickets.claimedCategory,
-                permissionOverwrites: [
-                    {
-                        id: createdBy.id,
-                        deny: ["VIEW_CHANNEL"]
-                    },
-                    {
-                        id: guild.roles.everyone,
-                        deny: ["VIEW_CHANNEL"]
-                    },
-                    {
-                        id: client.tickets.moderatorRole,
-                        deny: ["SEND_MESSAGES"]
-                    }
-                ]
+                parentID: client.tickets.claimedCategory
             })
 
             button.channel.send({embeds: claimEmbed})
