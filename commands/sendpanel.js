@@ -7,7 +7,6 @@ module.exports = class extends Command {
       name: "sendpanel",
       description: "Send panel :O",
       guildOnly: "747526604116459691",
-      slash: false,
       userRequiredPermissions: "ADMINISTRATOR",   
     })
   }
