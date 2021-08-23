@@ -7,7 +7,7 @@ module.exports = {
     run: async(client, button) => {
         if(button.customId !== "support_ticket_create") await button.defer();
 
-        let buttonMember = button.clicker.member;
+        let buttonMember = button.member;
         let guild = button.guild;
 
         if(button.customId == "support_ticket_create") {
@@ -185,7 +185,7 @@ module.exports = {
                 ]
             })
 
-            ticketChannel.send({content: `<@${createdBy}> Welcome back!`, embeds: supportEmbed, components: new MessageActionRow().addComponents([supportButton, claimButton])})
+            ticketChannel.send({content: `<@${createdBy.id}> Welcome back!`, embeds: supportEmbed, components: new MessageActionRow().addComponents([supportButton, claimButton])})
         }
 
         if(button.customId == `ticket_delete_${button.channel.id}`) {

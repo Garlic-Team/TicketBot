@@ -11,7 +11,7 @@ module.exports = class extends Command {
     })
   }
 
-  async run({client, respond}) {
+  async run({client, channel, respond}) {
     let embed = new MessageEmbed()
       .setAuthor("Support")
       .setDescription("You may ask any questions you have about the Garlic Team.")
@@ -25,6 +25,11 @@ module.exports = class extends Command {
       .setCustomId("support_ticket_create")
 
     respond({
+      content: "Sended!",
+      ephemeral: true
+    })
+
+    channel.send({
       content: embed,
       inlineReply: false,
       components: new MessageActionRow().addComponents([button])
