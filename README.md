@@ -9,7 +9,7 @@
 
 ### **How to use?**
 - Download the repo, rename a `template.env` file to `.env`, and change properties.
-- You need to change guildOnly to your guild id or simply delete this line.
+- In commands, you need to change guildOnly to your guild id or simply delete this line.
 
 ### Support
  - https://gcommands.js.org
