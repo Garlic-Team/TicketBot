@@ -13,11 +13,12 @@ module.exports = class extends Command {
 
   async run({client, channel, respond}) {
     let embed = new MessageEmbed()
-      .setAuthor("Support")
-      .setDescription("You may ask any questions you have about the Garlic Team.")
-      .setColor("#fcba03")
-      .setFooter("By Hyro#8938")
-      .setTimestamp();
+      .setAuthor(process.env.embedAuthor)
+      .setDescription(process.env.embedDescription)
+      .setColor(process.env.embedColor)
+      .setFooter(process.env.embedFooter);
+
+    if (process.env.embedTimestampEnabled === true) embed.setTimestamp()
 
     let button = new MessageButton()
       .setLabel("Support")
