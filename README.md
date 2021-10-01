@@ -6,10 +6,11 @@
 
 ### Star (Please)
 
-
 ### **How to use?**
-- Download the repo, rename a `template.env` file to `.env`, and change properties.
-- You need to change guildOnly to your guild id or simply delete this line.
+- Download this repo, rename `template.env` to `.env` and edit the token there.
+- Then set `config.json` as you want.
+- Change guildOnly in `commands/sendpanel.js`
+- Run the bot using `node index.js`
 
 ### Support
  - https://gcommands.js.org
