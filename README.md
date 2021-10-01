@@ -16,10 +16,10 @@
  - https://discord.gg/AjKJSBbGm2
 
 ### Requirements
- - Node `12.x+`
+ - Node `16.x+`
  - `axios` npm
- - `discord.js v12/v13` npm
- - `gcommands v6` npm
+ - `discord.js v13` npm
+ - `gcommands v7` npm
 
 
  `npm i discord.js axios gcommands`
