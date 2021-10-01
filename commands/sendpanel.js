@@ -13,15 +13,15 @@ module.exports = class extends Command {
 
   async run({client, channel, respond}) {
     let embed = new MessageEmbed()
-      .setAuthor(process.env.embedAuthor)
-      .setDescription(process.env.embedDescription)
-      .setColor(process.env.embedColor)
-      .setFooter(process.env.embedFooter);
+      .setAuthor(client.config.embed.author)
+      .setDescription(client.config.embed.description)
+      .setColor(client.config.embed.color)
+      .setFooter(client.config.embed.footer);
 
-    if (process.env.embedTimestampEnabled === true) embed.setTimestamp()
+    if (client.config.embed.timestamp === true) embed.setTimestamp()
 
     let button = new MessageButton()
-      .setLabel("Support")
+      .setLabel("Create")
       .setStyle("red")
       .setCustomId("support_ticket_create")
 

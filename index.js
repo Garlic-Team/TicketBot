@@ -1,6 +1,6 @@
 require("dotenv").config()
 const { Intents } = require('discord.js')
-const { GCommandsClient } = require("gcommands");
+const { GCommandsClient, MessageSelectMenu, MessageSelectMenuOption } = require("gcommands");
 
 const client = new GCommandsClient({
     cmdDir: "commands/",
@@ -11,19 +11,19 @@ const client = new GCommandsClient({
         context: 'false',
         prefix: '.'
     },
-    intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MEMBERS, Intents.FLAGS.GUILD_INTEGRATIONS]
+    intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MEMBERS, Intents.FLAGS.GUILD_MESSAGES]
 });
 
-client.on("ready", () => {
-    console.log("som")
+client.config = require("./config.json");
+client.categories = new MessageSelectMenu().setPlaceholder("Select category").setMinValues(1).setMaxValues(1).setCustomId('support_ticket_selectCategory')
+for(let category of client.config.categories) {
+    client.categories.addOptions([
+        new MessageSelectMenuOption().setLabel(category.menu.label).setDescription(category.menu.description).setDefault(category.menu.default).setValue(category.value)
+    ])
+}
 
-    client.tickets = {
-        category: process.env.ticketCategory,
-        closedCategory: process.env.ticketClosedCategory,
-        archiveCategory: process.env.archiveCategory,
-        claimedCategory: process.env.claimedCategory,
-        moderatorRole: process.env.ticketModeratorRole
-    }    
+client.on("ready", () => {
+    console.log("ready")
 })
 
 client
