@@ -81,6 +81,7 @@ module.exports = class extends Event {
                 content: `Your ticket has been created. ${ticketChannel}`,
                 ephemeral: true
             })
+            return;
         }
         
         if(button.customId === 'support_ticket_close') {
@@ -99,10 +100,10 @@ module.exports = class extends Event {
             let no = new MessageButton().setLabel("No").setEmoji("❌").setStyle("gray").setCustomId(`ticket_close_no_${button.user.id}`)
 
             let msg = await ticketChannel.send({content: `${button.user} Do you really want close ticket?`, components: new MessageActionRow().addComponent(yes).addComponent(no)})
-            let filter = (interaction) => interaction.isButton() && button.user.id == interaction.member.user.id
+            let filter = (interaction) => interaction.isButton() && button.user.id == interaction.member.user.id && interaction?.message?.id === msg.id;
             let collected = await msg.awaitMessageComponents(filter, { max: 1, time: 60000, errors: ["time"] })
-            if(!collected || collected.size < 0) return msg.delete(); 
-            msg.delete();
+            if(!collected || collected.size === 0) return msg.delete().catch(e => {}); 
+            msg.delete().catch(e => {});
 
             let closedEmbed = new MessageEmbed()
                 .setColor("#4287f5")
@@ -149,6 +150,7 @@ module.exports = class extends Event {
             })
 
             button.channel.send({embeds: closedEmbed, components: new MessageActionRow().addComponents([reopen, deleteButton, archiveButton, transcriptButton])})
+            return;
         }
 
         if(button.customId.includes('ticket_reopen')) {
@@ -157,7 +159,7 @@ module.exports = class extends Event {
 
             let allMessages = await channel.messages.fetch()
             let systemMessages = allMessages.filter(m => m.embeds && m.author.id == client.user.id);
-            systemMessages.forEach(msg => {msg.delete()})
+            systemMessages.forEach(msg => {msg.delete().catch(e => {})})
 
             let findChannels = client.config.categories.find(c => Object.values(c.channels).includes(channel.parentId));
 
@@ -182,11 +184,13 @@ module.exports = class extends Event {
                 allowedMentions: { parse: ["users"] },
                 components: new MessageActionRow().addComponent(supportButton)
             })
+            return;
         }
 
         if(button.customId.includes('ticket_delete')) {
             let channel = button.channel;
             channel.delete();
+            return;
         }
 
         if(button.customId.includes('ticket_transcript')) {
@@ -201,6 +205,7 @@ module.exports = class extends Event {
                 content: `${button.clicker.user} your transcript is ready!`,
                 attachments: [attch]
             })
+            return;
         }
 
         if(button.customId.includes('ticket_archive')) {
@@ -241,6 +246,7 @@ module.exports = class extends Event {
             })
 
             channel.send({embeds: archiveEmbed})
+            return;
         }
     }
 

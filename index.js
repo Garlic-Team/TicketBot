@@ -3,8 +3,8 @@ const { Intents } = require('discord.js')
 const { GCommandsClient, MessageSelectMenu, MessageSelectMenuOption } = require("gcommands");
 
 const client = new GCommandsClient({
-    cmdDir: "commands/",
-    eventDir: "events/",
+    cmdDir: __dirname + "/commands/",
+    eventDir: __dirname + "/events/",
     language: "english",
     commands: {
         slash: 'both',
@@ -29,5 +29,8 @@ client.on("ready", () => {
 client
     .on("log", console.log)
     .on("debug", console.log)
+
+process.on('uncaughtException', console.log)
+    .on('unhandledRejection', console.log);
 
 client.login(process.env.token)
