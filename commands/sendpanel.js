@@ -1,5 +1,5 @@
-const { MessageEmbed } = require("discord.js");
-const { MessageButton, MessageActionRow, Command } = require("gcommands");
+const { MessageEmbed, MessageButton, MessageActionRow } = require("discord.js");
+const { Command } = require("gcommands");
 
 module.exports = class extends Command {
   constructor(...args) {
@@ -12,7 +12,7 @@ module.exports = class extends Command {
   }
 
   async run({client, channel, respond}) {
-    let embed = new MessageEmbed()
+    const embed = new MessageEmbed()
       .setAuthor(client.config.embed.author)
       .setDescription(client.config.embed.description)
       .setColor(client.config.embed.color)
@@ -20,9 +20,9 @@ module.exports = class extends Command {
 
     if (client.config.embed.timestamp === true) embed.setTimestamp()
 
-    let button = new MessageButton()
+    const button = new MessageButton()
       .setLabel("Create")
-      .setStyle("red")
+      .setStyle("DANGER")
       .setCustomId("support_ticket_create")
 
     respond({
@@ -31,9 +31,8 @@ module.exports = class extends Command {
     })
 
     channel.send({
-      content: embed,
-      inlineReply: false,
-      components: new MessageActionRow().addComponents([button])
+      embeds: [embed],
+      components: [new MessageActionRow().addComponents([button])]
     })
   }
 };

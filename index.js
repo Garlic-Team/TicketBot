@@ -1,10 +1,12 @@
 require("dotenv").config()
-const { Intents } = require('discord.js')
-const { GCommandsClient, MessageSelectMenu, MessageSelectMenuOption } = require("gcommands");
+const { Intents, MessageSelectMenu } = require('discord.js')
+const { GCommandsClient } = require("gcommands");
 
 const client = new GCommandsClient({
-    cmdDir: __dirname + "/commands/",
-    eventDir: __dirname + "/events/",
+    loader: {
+        cmdDir: __dirname + "/commands/",
+        eventDir: __dirname + "/events/",
+    },
     language: "english",
     commands: {
         slash: 'both',
@@ -18,7 +20,12 @@ client.config = require("./config.json");
 client.categories = new MessageSelectMenu().setPlaceholder("Select category").setMinValues(1).setMaxValues(1).setCustomId('support_ticket_selectCategory')
 for(let category of client.config.categories) {
     client.categories.addOptions([
-        new MessageSelectMenuOption().setLabel(category.menu.label).setDescription(category.menu.description).setDefault(category.menu.default).setValue(category.value)
+        {
+            label: category.menu.label,
+            description: category.menu.description,
+            default: category.menu.default,
+            value: category.value
+        }
     ])
 }
 

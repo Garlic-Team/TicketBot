@@ -3,6 +3,6 @@
     "axios": "^0.21.1",
     "discord.js": "^13.1.0",
     "dotenv": "^10.0.0",
-    "gcommands": "^7.1.2"
+    "gcommands": "^8.0.1"
   }
 }

@@ -1,36 +1,37 @@
-const { MessageEmbed, MessageAttachment } = require("discord.js");
-const { Event, MessageActionRow, MessageButton } = require("gcommands");
+const { MessageEmbed, MessageAttachment, MessageActionRow, MessageButton } = require("discord.js");
+const { Event } = require("gcommands");
 
 module.exports = class extends Event {
     constructor(...args) {
         super(...args, {
-            name: "clickButton",
+            name: "interactionCreate",
             ws: false,
             once: false
         })
     }
 
     async run(client, button) {
-        if(button.customId !== 'support_ticket_create') button.defer();
+        if(!button.isButton()) return;
+
+        if(button.customId !== 'support_ticket_create') button.deferReply();
 
         if(button.customId === 'support_ticket_create') {
-            let msg = await button.reply.send({
+            let msg = await button.reply({
                 content: 'Select category',
                 ephemeral: true,
+                fetchReply: true,
                 components: [new MessageActionRow().addComponents([client.categories])]
             })
 
             let filter = (i) => i.isSelectMenu() && msg.id === i.message.id && button.user.id === i.user.id && i.customId === 'support_ticket_selectCategory';
-            let collector = await button.channel.awaitMessageComponents(filter, { max: 1, time: 30000 });
-            if(!collector || collector.size < 0) button.reply.edit('Time :(')
+            let collector = await button.channel.awaitMessageComponent({ filter, max: 1, time: 30000 }).catch(e => e);
+            if(!collector) button.editReply('Time :(');
 
-            collector = collector.first();
-        
             let findChannels = client.config.categories.find(c => c.value === String(collector.values[0]));
 
             let alrCreated = collector.guild.channels.cache.filter(m => m.parentId === findChannels.channels.category && ["GUILD_TEXT","text"].includes(m.type) && m.name.includes("ticket-") && m.name.split("-")[1] === collector.user.id);
             if(alrCreated.size > 0) {
-                return collector.reply.send({
+                return collector.reply({
                     content: client.config.alreadyTicket,
                     ephemeral: true
                 })
@@ -61,7 +62,8 @@ module.exports = class extends Event {
             })
 
             let supportEmbed = new MessageEmbed()
-                .setColor(findChannels.embed.open.color).setDescription(findChannels.embed.open.description).setFooter(findChannels.embed.open.footer)
+                .setColor(findChannels.embed.open.color).setDescription(findChannels.embed.open.description).setFooter(findChannels.embed.open.footer);
+            
             if(findChannels.embed.open.timestamp) supportEmbed.setTimestamp();
 
             let supportButton = new MessageButton()
@@ -72,12 +74,12 @@ module.exports = class extends Event {
             
             ticketChannel.send({
                 content: findChannels.embed.open.text.replace("{USER}", `<@${collector.user.id}>`), 
-                embeds: supportEmbed, 
+                embeds: [supportEmbed], 
                 allowedMentions: { parse: ["users"] },
-                components: new MessageActionRow().addComponent(supportButton)
+                components: [new MessageActionRow().addComponent(supportButton)]
             })
 
-            collector.reply.send({
+            collector.reply({
                 content: `Your ticket has been created. ${ticketChannel}`,
                 ephemeral: true
             })
@@ -101,8 +103,8 @@ module.exports = class extends Event {
 
             let msg = await ticketChannel.send({content: `${button.user} Do you really want close ticket?`, components: new MessageActionRow().addComponent(yes).addComponent(no)})
             let filter = (interaction) => interaction.isButton() && button.user.id == interaction.member.user.id && interaction?.message?.id === msg.id;
-            let collected = await msg.awaitMessageComponents(filter, { max: 1, time: 60000, errors: ["time"] })
-            if(!collected || collected.size === 0) return msg.delete().catch(e => {}); 
+            let collected = await msg.awaitMessageComponent({ filter, max: 1, time: 60000, errors: ["time"] }).catch(e => e);
+            if(!collected) return msg.delete().catch(e => {}); 
             msg.delete().catch(e => {});
 
             let closedEmbed = new MessageEmbed()
@@ -149,7 +151,10 @@ module.exports = class extends Event {
                 ]
             })
 
-            button.channel.send({embeds: closedEmbed, components: new MessageActionRow().addComponents([reopen, deleteButton, archiveButton, transcriptButton])})
+            button.channel.send({
+                embeds: [closedEmbed],
+                components: [new MessageActionRow().addComponents([reopen, deleteButton, archiveButton, transcriptButton])]
+            })
             return;
         }
 
@@ -164,7 +169,8 @@ module.exports = class extends Event {
             let findChannels = client.config.categories.find(c => Object.values(c.channels).includes(channel.parentId));
 
             let supportEmbed = new MessageEmbed()
-                .setColor(findChannels.embed.open.color).setDescription(findChannels.embed.open.description).setFooter(findChannels.embed.open.footer)
+                .setColor(findChannels.embed.open.color).setDescription(findChannels.embed.open.description).setFooter(findChannels.embed.open.footer);
+            
             if(findChannels.embed.open.timestamp) supportEmbed.setTimestamp();
 
             let supportButton = new MessageButton()
@@ -180,9 +186,9 @@ module.exports = class extends Event {
 
             channel.send({
                 content: findChannels.embed.open.text.replace("{USER}", `<@${createdBy}>`), 
-                embeds: supportEmbed, 
+                embeds: [supportEmbed], 
                 allowedMentions: { parse: ["users"] },
-                components: new MessageActionRow().addComponent(supportButton)
+                components: [new MessageActionRow().addComponent(supportButton)]
             })
             return;
         }
@@ -245,7 +251,7 @@ module.exports = class extends Event {
                 ]
             })
 
-            channel.send({embeds: archiveEmbed})
+            channel.send({embeds: [archiveEmbed]})
             return;
         }
     }
