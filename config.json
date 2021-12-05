@@ -1,0 +1,67 @@
+{
+    "embed": {
+        "author": "Support",
+        "description": "You may ask any questions you have about the Garlic Team.",
+        "color": "#fcba03",
+        "footer": "By Garlic Team with 💖",
+        "timestamp": true
+    },
+    "alreadyTicket": "Sorry, you already have ticket.",
+    "categories": [
+        {
+            "value": "techsupport",
+            "embed": {
+                "open": {
+                    "text": "{USER} Welcome!",
+                    "author": "Support",
+                    "description": "Support will be with you shortly.\nTo close this ticket react with :lock:",
+                    "color": "#fcba03",
+                    "footer": "By Garlic Team with 💖",
+                    "timestamp": true
+                },
+                "close": {
+                    "author": "Support",
+                    "description": "Ticket closed by {CLOSEDBY}\nTicket created by {CREATEDBY}\n\n🔓 Reopen Ticket\n📛 Delete Ticket\n💨 Archive Ticket\n💫 Transcript Ticket",
+                    "color": "#fcba03",
+                    "footer": "By Garlic Team with 💖",
+                    "timestamp": true
+                }
+            },
+            "menu": {
+                "label": "Tech Support",
+                "description": "green",
+                "default": false
+            },
+            "channels": {
+                "category": "883640271760404520",
+                "closed": "850688724513849374",
+                "archive": "id",
+                "claimed": "id"
+            },
+            "roles": {
+                "moderator": [
+                    "777805077825060867"
+                ]
+            }
+        },
+        {
+            "value": "gamesupport",
+            "menu": {
+                "label": "Game Support",
+                "description": "red",
+                "default": false
+            },
+            "channels": {
+                "category": "id",
+                "closed": "id",
+                "archive": "id",
+                "claimed": "id"
+            },
+            "roles": {
+                "moderator": [
+                    "id"
+                ]
+            }
+        }
+    ]
+}

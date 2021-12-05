@@ -1,0 +1,19 @@
+{
+  "name": "ticket-bot",
+  "version": "0.1.0",
+  "description": "",
+  "main": "src/main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/main.js",
+    "pm2": "pm2 start main.js --name MusicBot",
+    "eslint": "eslint src/"
+  },
+  "keywords": [],
+  "author": "Garlic-Team (xHyroM)",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^8.4.0",
+    "eslint-plugin-import": "^2.25.3"
+  }
+}
