@@ -17,7 +17,7 @@
     "eslint-plugin-import": "^2.25.3"
   },
   "dependencies": {
-    "discord.js": "^13.3.1",
+    "discord.js": "^13.5.1",
     "gcommands": "^8.0.2"
   }
 }
