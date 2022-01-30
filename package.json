@@ -18,6 +18,6 @@
   },
   "dependencies": {
     "discord.js": "^13.3.1",
-    "gcommands": "^8.0.2"
+    "gcommands": "^8.0.3"
   }
 }
